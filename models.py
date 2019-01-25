@@ -1,5 +1,7 @@
 from peewee import *
 
+from flask_bcrypt import generate_password_hash
+
 DATABASE = SqliteDatabase('taco.db')
 
 class User(Model):
