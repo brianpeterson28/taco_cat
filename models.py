@@ -11,10 +11,11 @@ class User(Model):
     class Meta:
         database = DATABASE
 
-@classmethod
-def create_user(cls, email, password):
-    try:
-        with DATABASE.transaction():
-            cls.create(email=email, password=generate_password_hash(password))
-    except IntegrityError:
-        raise ValueError("User already exists.")
+    @classmethod
+    def create_user(cls, email, password):
+        try:
+            with DATABASE.transaction():
+                cls.create(email=email, 
+                           password=generate_password_hash(password))
+        except IntegrityError:
+            raise ValueError("User already exists.")
