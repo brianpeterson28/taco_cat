@@ -19,3 +19,25 @@ class User(Model):
                            password=generate_password_hash(password))
         except IntegrityError:
             raise ValueError("User already exists.")
+
+class Taco(Model):
+    user = ForeignKeyField(User, related_name='tacos')
+    protein = TextField()
+    shell = TextField()
+    cheese = BooleanField(default=True)
+    extras = TextField()
+
+    class Meta:
+        database = DATABASE
+
+    @classmethod
+    def create(cls, user, protein, shell, cheese, extras):
+        try:
+            with DATABASE.transaction():
+                cls.create(user=user,
+                           protein=protein,
+                           shell=shell,
+                           cheese=cheese,
+                           extras=extras)
+        except IntegrityError:
+            pass
