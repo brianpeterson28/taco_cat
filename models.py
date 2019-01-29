@@ -30,18 +30,6 @@ class Taco(Model):
     class Meta:
         database = DATABASE
 
-    @classmethod
-    def create(cls, user, protein, shell, cheese, extras):
-        try:
-            with DATABASE.transaction():
-                cls.create(user=user,
-                           protein=protein,
-                           shell=shell,
-                           cheese=cheese,
-                           extras=extras)
-        except IntegrityError:
-            pass
-
 def initialize():
     DATABASE.connect()
     DATABASE.create_tables([User, Taco], safe=True)
