@@ -41,3 +41,9 @@ class Taco(Model):
                            extras=extras)
         except IntegrityError:
             pass
+
+def initialize():
+    DATABASE.connect()
+    DATABASE.create_tables([User, Taco], safe=True)
+    DATABASE.close()
+
