@@ -1,10 +1,11 @@
 from peewee import *
 
 from flask_bcrypt import generate_password_hash
+from flask_login import UserMixin
 
 DATABASE = SqliteDatabase('taco.db')
 
-class User(Model):
+class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField(max_length=20)
 
@@ -29,9 +30,4 @@ class Taco(Model):
 
     class Meta:
         database = DATABASE
-
-def initialize():
-    DATABASE.connect()
-    DATABASE.create_tables([User, Taco], safe=True)
-    DATABASE.close()
-
+        
