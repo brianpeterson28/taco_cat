@@ -15,7 +15,11 @@ login_manager.init_app(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    tacos = models.Taco.select()
+    if tacos.count() == 0:
+        return "no tacos yet"
+    else:
+        return render_template('index.html', tacos=tacos)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
