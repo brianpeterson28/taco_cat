@@ -30,4 +30,3 @@ class Taco(Model):
 
     class Meta:
         database = DATABASE
-        
