@@ -21,7 +21,7 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[DataRequired()])
 
 class TacoForm(Form):
-    protein = StringField('protein', validators=[DataRequired()])
-    shell = StringField('shell', validators=[DataRequired()])
-    cheese = BooleanField('cheese', validators=[DataRequired()])
-    extras = StringField('extras', validators=[DataRequired()])
+    protein = StringField('Protein', validators=[DataRequired()])
+    shell = StringField('Shell', validators=[DataRequired()])
+    cheese = BooleanField('Cheese', validators=[DataRequired()])
+    extras = StringField('Extras', validators=[DataRequired()])

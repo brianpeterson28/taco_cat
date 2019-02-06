@@ -1,4 +1,4 @@
-from flask import Flask, g, flash, redirect, url_for, render_template
+from flask import Flask, g, flash, redirect, url_for, render_template, flash
 
 from flask_bcrypt import check_password_hash
 from flask_login import (LoginManager, login_user, logout_user,
@@ -37,10 +37,7 @@ def after_request(response):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     tacos = models.Taco.select()
-    if tacos.count() == 0:
-        return "no tacos yet"
-    else:
-        return render_template('index.html', tacos=tacos)
+    return render_template('index.html', tacos=tacos)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -50,20 +47,6 @@ def register():
                                 password=form.password.data)
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = forms.LoginForm()
-    if form.validate_on_submit():
-        try:
-            user = models.User.get(models.User.email == form.email.data)
-        except models.DoesNotExist:
-            pass
-        else:
-            user = models.User.get(models.User.email == form.email.data)
-            login_user(user)
-            return redirect(url_for('index'))
-        return render_template('login.html', form=form)
 
 @app.route('/taco', methods=['GET','POST'])
 @login_required
@@ -77,7 +60,30 @@ def taco():
                           extras=form.extras.data.strip())
         return redirect(url_for('index'))
     return render_template('taco.html', form=form)
-        
-    
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = forms.LoginForm()
+    if form.validate_on_submit():
+        try:
+            user = models.User.get(models.User.email == form.email.data)
+        except models.DoesNotExist:
+            flash("E-mail or password doesn't match.", "error")
+        else:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                flash("You've benn logged in!", "success")
+                return redirect(url_for('index'))
+            else:
+                flash("Your email or password doesn't match.", "error")
+    return render_template('login.html', form=form)
+
+@app.route('/logout')
+@login_required 
+def logout():
+    logout_user()
+    flash("You've been logged out!", "success")
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
     pass

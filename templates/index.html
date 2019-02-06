@@ -16,11 +16,16 @@
         {% for taco in tacos %}
             <tr>
               <!-- taco attributes here -->
+              <th>{{ taco.protein }}</th>
+              <th>{{ taco.shell }}</th>
+              <th>{{ taco.cheese }}</th>
+              <th>{{ taco.extras }}</th>
             </tr>
         {% endfor %}
           </tbody>
         </table>
     {% else %}
         <!-- message for missing tacos -->
+         <h3>No tacos yet</h3>
     {% endif %}
 {% endblock %}
